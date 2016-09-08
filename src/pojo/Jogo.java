@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-public class Jogo {
+public class Jogo {	
 	public void ler_jogador (Jogador jogador) {	
 		Scanner read = new Scanner(System.in);
 		
@@ -59,9 +59,17 @@ public class Jogo {
 	public void imprimir_pecas (int[][] pecas) {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				System.out.print("[" + i + "][" + j + "] = " + pecas[i][j] + "\t");
+				/**System.out.print("[" + i + "][" + j + "] = " + pecas[i][j] + "\t");*/
+				System.out.print(pecas[i][j] + "\t");
 			}
 			System.out.print("\n");
+		}
+		System.out.println("\n");
+	}
+	
+	public void limpar_console () {
+		for (int x = 0; x < 50; x++) {
+			System.out.println();
 		}
 	}
 

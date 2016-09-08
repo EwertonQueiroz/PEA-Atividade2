@@ -1,34 +1,42 @@
 package pojo;
 
-import javax.swing.Timer;
-
 public class Main {
 
 	public static void main(String[] args) {
 		
 		Jogador jogador[] = new Jogador[2];
-		Jogo jogo = new Jogo();
-//		Inserir contador
-//		Timer contador = new Timer();
+		Jogo jogo = new Jogo ();
+		Reminder reminder = new Reminder ();
 		
-		jogador[0] = new Jogador();
-		jogador[1] = new Jogador();
+		reminder.start();
 		
-		jogo.ler_jogador(jogador[0]);
-		jogo.ler_jogador(jogador[1]);
+		jogador[0] = new Jogador ();
+		jogador[1] = new Jogador ();
 		
-		int[][] memoria = jogo.iniciar_jogo();
-//-----------------------------     AQUI     -----------------------------//
-//		contador.start();
-//		contador.wait(1.5);
-		jogo.imprimir_pecas(memoria);
+//		jogo.ler_jogador (jogador[0]);
+//		jogo.ler_jogador (jogador[1]);
 		
-		while (jogo.checar_tabuleiro(memoria)) {
-			jogo.turno(memoria, jogador[0]);
-			jogo.turno(memoria, jogador[1]);
+		new Reminder (3);
+		
+		int[][] memoria = jogo.iniciar_jogo ();
+		
+		synchronized (reminder) {
+			try {
+				jogo.imprimir_pecas (memoria);
+				reminder.wait ();
+			}
+			
+			catch (InterruptedException e) {
+				e.printStackTrace ();
+			}
+		}
+		System.out.println("teste");
+		while (jogo.checar_tabuleiro (memoria)) {
+			jogo.turno (memoria, jogador[0]);
+			jogo.turno (memoria, jogador[1]);
 		}
 		
-		jogo.determinar_vencedor(jogador[0], jogador[1]);
+		jogo.determinar_vencedor (jogador[0], jogador[1]);
 		
 	}
 
