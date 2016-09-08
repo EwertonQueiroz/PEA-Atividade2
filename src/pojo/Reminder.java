@@ -7,9 +7,9 @@ public class Reminder extends Thread {
 	Timer timer;
 	Jogo j = new Jogo();
 	
-	Reminder () {}
+	public Reminder () {}
 	
-	Reminder (int segundos) {
+	public Reminder (int segundos) {
 		timer = new Timer();
 		timer.schedule(new RemindTask(), segundos * 1000);
 	}
