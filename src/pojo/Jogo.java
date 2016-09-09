@@ -88,56 +88,95 @@ public class Jogo {
 		System.out.println("\n");
 	}
 	
-	public void turno (int pecas[][], Jogador jogador) {
-		int linha_primeira, linha_segunda;
-		int coluna_primeira, coluna_segunda;
-		int pontuacao = jogador.getPontuacao();
+	private int jogada (int pecas[][], int pontuacao) {
+		int linha_primeira = 0, linha_segunda = 0;
+		int coluna_primeira = 0, coluna_segunda = 0;
+		
 		boolean turno = true;
+		boolean valor_valido = false;
 		
 		Scanner read = new Scanner(System.in);
 		
 		if (checar_tabuleiro(pecas)) {
 			while (turno == true) {
-				System.out.println("Informe a linha da primeira peça:");
-				linha_primeira = read.nextInt();
+				while (valor_valido == false) {
+					System.out.println("Informe a linha da primeira peça:");
+					linha_primeira = read.nextInt();
+					
+					System.out.println("Informe a coluna da primeira peça:");
+					coluna_primeira = read.nextInt();
+					
+					valor_valido = validar_jogada(linha_primeira, coluna_primeira);
+				}
 				
-				System.out.println("Informe a coluna da primeira peça:");
-				coluna_primeira = read.nextInt();
+				valor_valido = false;
 				
-				System.out.println("Informe a linha da segunda peça:");
-				linha_segunda = read.nextInt();
+				while (valor_valido == false) {
+					System.out.println("Informe a linha da segunda peça:");
+					linha_segunda = read.nextInt();
+					
+					System.out.println("Informe a coluna da segunda peça:");
+					coluna_segunda = read.nextInt();
+					
+					valor_valido = validar_jogada(linha_segunda, coluna_segunda);
+				}
 				
-				System.out.println("Informe a coluna da segunda peça:");
-				coluna_segunda = read.nextInt();
-		/**-------------------- RESOLVER ERRO A PARTIR DAQUI ---------------------------------(java.lang.ArrayIndexOutOfBoundsException: 4)----------*/
+				linha_primeira -= 1;
+				coluna_primeira -= 1;
+				
+				linha_segunda -= 1;
+				coluna_segunda -= 1;
+		
 				if (pecas[linha_primeira][coluna_primeira] != -1 && pecas[linha_segunda][coluna_segunda] != -1) {
 					if (pecas[linha_primeira][coluna_primeira] == pecas[linha_segunda][coluna_segunda]) {
-						jogador.setPontuacao(pontuacao++);
+						pontuacao += 1;
 						pecas[linha_primeira][coluna_primeira] = -1;
 						pecas[linha_segunda][coluna_segunda] = -1;
 						turno = false;
-						System.out.println("As peças são iguais, você pontuou! Vez do adversário.");
+						System.out.println("As peças são iguais, você pontuou! Vez do adversário.\n");
 					}
 					
 					else {
-						System.out.println("As peças são diferentes! Vez do adversário.");
+						System.out.println("As peças são diferentes! Vez do adversário.\n");
 						turno = false;
 					}
 				}
 				
 				else {
 					if (pecas[linha_primeira][coluna_primeira] == -1) {
-						System.out.println("A peça [" + linha_primeira + "][" + coluna_primeira + "] já foi desvirada, tente outra.");
+						System.out.println("A peça [" + linha_primeira + "][" + coluna_primeira + "] já foi desvirada, tente outra.\n");
 					}
 					
 					else {
-						System.out.println("A peça [" + linha_segunda + "][" + coluna_segunda + "] já foi desvirada, tente outra.");
+						System.out.println("A peça [" + linha_segunda + "][" + coluna_segunda + "] já foi desvirada, tente outra.\n");
 					}
 				}
 			}
 		}
 				
 		read.close();
+		
+		return pontuacao;
+	}
+	
+	public boolean validar_jogada(int linha, int coluna) {
+		if (linha == 0 || linha > 4) {
+			System.out.println("Valor inválido para linha.\nUtilize valores entre 1 e 4.\n");
+			return false;
+		}
+		
+		if (coluna == 0 || coluna > 4) {
+			System.out.println("Valor inválido para coluna.\nUtilize valores entre 1 e 4.\n");
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public void turno (int pecas[][], Jogador jogador) {
+		int pontuacao = jogador.getPontuacao();
+		
+		jogador.setPontuacao(jogada(pecas, pontuacao));
 	}
 	
 	public boolean checar_tabuleiro (int pecas[][]) {
