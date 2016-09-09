@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-public class Jogo {	
+public class Jogo {
+	// Esta função lê o nome do jogador e inicializa o placar do mesmo em 0.
 	public void ler_jogador (Jogador jogador) {	
 		String nome = null;
 		
@@ -27,6 +28,19 @@ public class Jogo {
 		jogador.setPontuacao(0);
 	}
 	
+	/* 
+	 * Esta função declara, inicializa e devolve a matriz que corresponderá às peças e cria duas listas e dois vetores utilizados
+	 * na inicialização da matriz.
+	 * 
+	 * Funcionamento:
+	 * 		Uma lista com valores de 0 à 3 que será utilizada para determinar os índices da matriz, um vetor de 0 à 3 que corresponderá
+	 * 		a linha da matriz e receberá os elementos da lista (note que os elementos da lista estão permutados aleatoriamente) e outro
+	 * 		vetor de 0 à 3 corresponderá à coluna e funciona de forma semelhante ao primeiro vetor. A segunda lista contém números
+	 * 		de 1 a 8 que serão utilizados como as cartas do jogo.
+	 * 
+	 * 		Após os valores gerados aleatoriamente saírem da lista para os vetores, a matriz é percorrida recebendo como índices os
+	 * 		vetores correspondentes a linha e a coluna e atribuindo a cada posição desta matriz um elemento da lista que contém as "cartas".
+	 */
 	public int[][] iniciar_jogo () {
 		int pecas[][] = new int[4][4]; 
 		int linha[] = new int[4];
@@ -78,6 +92,9 @@ public class Jogo {
 		return pecas;
 	}
 	
+	/* 
+	 * Esta é uma função de testes para visualizar a matriz gerada.                    /
+	 */
 	public void imprimir_pecas (int pecas[][]) {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -87,7 +104,27 @@ public class Jogo {
 		}
 		System.out.println("\n");
 	}
+	//*/
 	
+	/*
+	 * Esta função recebe uma matriz correspondente as peças do jogo e a pontuação atual do jogador.
+	 * 
+	 * Funcionamento:
+	 * 		Primeiro verifica-se se as cartas são válida, ou seja, se todas as peças da partida estão diferente de -1.
+	 * 		Caso as cartas sejam válidas é solicitada as posições da primeira carta e é realizada uma checagem para
+	 * 		saber se àquela posição é válida ou não, se não for, é exibida uma mensagem informando que foi inserida
+	 * 		uma posição inválida e solicita-se uma nova posição, se for válida, é solicitada a posição da segunda
+	 * 		carta e a mesma verificação anterior é realizada.
+	 * 
+	 * 		Os valores informados pelo jogador são decrementados em uma unidade para que possam ser passados para o vetor
+	 * 		para que seja realizada a comparação entre a primeira posição e a segunda.
+	 * 		
+	 * 		Após isso, verifica-se se àquelas posições informadas são diferentes de -1, se não forem, a execução retorna
+	 * 		para a etapa de leitura e informa que as cartas informadas já foram desviradas, se forem, verifica-se se os
+	 * 		valores são iguais, caso não sejam, é informado que as cartas são diferentes e é passada a vez, se forem,
+	 * 		a pontuação é incrementada em uma unidade, as peças referentes a posição informada pelo jogador são atualizadas
+	 * 		para -1 e é informado que as catas são iguais e que é a vez do adversário.
+	 */
 	private int jogada (int pecas[][], int pontuacao) {
 		int linha_primeira = 0, linha_segunda = 0;
 		int coluna_primeira = 0, coluna_segunda = 0;
@@ -99,26 +136,28 @@ public class Jogo {
 		
 		if (checar_tabuleiro(pecas)) {
 			while (turno == true) {
-				while (valor_valido == false) {
-					System.out.println("Informe a linha da primeira peça:");
-					linha_primeira = read.nextInt();
+				while (read.hasNextInt()) {
+					while (valor_valido == false) {
+						System.out.println("Informe a linha da primeira peça:");
+						linha_primeira = read.nextInt();
+						
+						System.out.println("Informe a coluna da primeira peça:");
+						coluna_primeira = read.nextInt();
+						
+						valor_valido = validar_jogada(linha_primeira, coluna_primeira);
+					}
 					
-					System.out.println("Informe a coluna da primeira peça:");
-					coluna_primeira = read.nextInt();
+					valor_valido = false;
 					
-					valor_valido = validar_jogada(linha_primeira, coluna_primeira);
-				}
-				
-				valor_valido = false;
-				
-				while (valor_valido == false) {
-					System.out.println("Informe a linha da segunda peça:");
-					linha_segunda = read.nextInt();
-					
-					System.out.println("Informe a coluna da segunda peça:");
-					coluna_segunda = read.nextInt();
-					
-					valor_valido = validar_jogada(linha_segunda, coluna_segunda);
+					while (valor_valido == false) {
+						System.out.println("Informe a linha da segunda peça:");
+						linha_segunda = read.nextInt();
+						
+						System.out.println("Informe a coluna da segunda peça:");
+						coluna_segunda = read.nextInt();
+						
+						valor_valido = validar_jogada(linha_segunda, coluna_segunda);
+					}
 				}
 				
 				linha_primeira -= 1;
@@ -153,12 +192,19 @@ public class Jogo {
 				}
 			}
 		}
+		
+		else {
+			System.out.println("Cartas inválidas!");
+		}
 				
 		read.close();
 		
 		return pontuacao;
 	}
 	
+	/*
+	 * Esta função verifica se a posição informada pelo jogador é uma posição válida na matriz.
+	 */
 	public boolean validar_jogada(int linha, int coluna) {
 		if (linha == 0 || linha > 4) {
 			System.out.println("Valor inválido para linha.\nUtilize valores entre 1 e 4.\n");
@@ -173,12 +219,24 @@ public class Jogo {
 		return true;
 	}
 	
+	/*
+	 * Esta função recebe a matriz correspondente às cartas e o objeto do jogador que está jogando no momento e sua pontuação é atualizada.
+	 * 
+	 * Funcionamento:
+	 * 		A partir do objeto do jogador, é obtida a pontuação do mesmo e é chamada a função setPontuacao para
+	 * 		atualizar seus pontos. A função setPontuacao recebe como parâmetro a função jogada().
+	 */
 	public void turno (int pecas[][], Jogador jogador) {
 		int pontuacao = jogador.getPontuacao();
 		
 		jogador.setPontuacao(jogada(pecas, pontuacao));
 	}
 	
+	/*
+	 * Esta função recebe a matriz correspondente às cartas e devolve True se a contagem de elementos {-1}
+	 * é diferente do tamanho da matriz e False se for igual.
+	 * O contador só é incrementado até atingir 16, que é o tamanho da matriz. 
+	 */
 	public boolean checar_tabuleiro (int pecas[][]) {
 		int contador = 0;
 		for (int i = 0; i < 4; i++) {
@@ -198,6 +256,10 @@ public class Jogo {
 		}
 	}
 	
+	/*
+	 * Esta função recebe o objeto dos dois jogadores, obtém suas respectivas pontuações, compara-as e informa quem venceu ou se houve um empate.
+	 * Junto com o nome do vencedor, ela exibe também a pontuação obtida pelo mesmo. 
+	 */
 	public void determinar_vencedor (Jogador jogador1, Jogador jogador2) {
 		if (jogador1.getPontuacao() != jogador2.getPontuacao()) {
 			if (jogador1.getPontuacao() != jogador2.getPontuacao()) {
