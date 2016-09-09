@@ -1,20 +1,30 @@
 package pojo;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class Jogo {	
 	public void ler_jogador (Jogador jogador) {	
-		Scanner read = new Scanner(System.in);
+		String nome = null;
+		
+		BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 		
 		System.out.println("Digite o nome do jogador:");
 		
-		jogador.setNome(read.nextLine());
+		try {
+			nome = read.readLine();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		jogador.setNome(nome);
 		
 		jogador.setPontuacao(0);
-		
-		read.close();
 	}
 	
 	public int[][] iniciar_jogo () {
@@ -46,20 +56,31 @@ public class Jogo {
         	a++;
         	coluna[a] = posicoes.get(i);
         }
-
+        
+        a = 0;
 		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				pecas[linha[i]][coluna[j]] = valores.get(5);
+			for (int j = 0; j < 2; j++) {
+				pecas[linha[i]][coluna[j]] = valores.get(a);
+				a++;
+			}
+        }
+		
+		Collections.shuffle(valores);
+		
+		a = 0;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 2; j < 4; j++) {
+				pecas[linha[i]][coluna[j]] = valores.get(a);
+				a++;
 			}
         }
 		
 		return pecas;
 	}
 	
-	public void imprimir_pecas (int[][] pecas) {
+	public void imprimir_pecas (int pecas[][]) {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				/**System.out.print("[" + i + "][" + j + "] = " + pecas[i][j] + "\t");*/
 				System.out.print(pecas[i][j] + "\t");
 			}
 			System.out.print("\n");
@@ -67,13 +88,7 @@ public class Jogo {
 		System.out.println("\n");
 	}
 	
-	public void limpar_console () {
-		for (int x = 0; x < 50; x++) {
-			System.out.println();
-		}
-	}
-
-	public void turno (int[][] pecas, Jogador jogador) {
+	public void turno (int pecas[][], Jogador jogador) {
 		int linha_primeira, linha_segunda;
 		int coluna_primeira, coluna_segunda;
 		int pontuacao = jogador.getPontuacao();
@@ -94,7 +109,7 @@ public class Jogo {
 				
 				System.out.println("Informe a coluna da segunda peça:");
 				coluna_segunda = read.nextInt();
-				
+		/**-------------------- RESOLVER ERRO A PARTIR DAQUI ---------------------------------(java.lang.ArrayIndexOutOfBoundsException: 4)----------*/
 				if (pecas[linha_primeira][coluna_primeira] != -1 && pecas[linha_segunda][coluna_segunda] != -1) {
 					if (pecas[linha_primeira][coluna_primeira] == pecas[linha_segunda][coluna_segunda]) {
 						jogador.setPontuacao(pontuacao++);
@@ -125,7 +140,7 @@ public class Jogo {
 		read.close();
 	}
 	
-	public boolean checar_tabuleiro (int[][] pecas) {
+	public boolean checar_tabuleiro (int pecas[][]) {
 		int contador = 0;
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {

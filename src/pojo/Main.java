@@ -6,31 +6,17 @@ public class Main {
 		
 		Jogador jogador[] = new Jogador[2];
 		Jogo jogo = new Jogo ();
-		Reminder reminder = new Reminder ();
-		
-		reminder.start();
 		
 		jogador[0] = new Jogador ();
 		jogador[1] = new Jogador ();
 		
-//		jogo.ler_jogador (jogador[0]);
-//		jogo.ler_jogador (jogador[1]);
-		
-		new Reminder (3);
+		jogo.ler_jogador (jogador[0]);
+		jogo.ler_jogador (jogador[1]);
 		
 		int[][] memoria = jogo.iniciar_jogo ();
 		
-		synchronized (reminder) {
-			try {
-				jogo.imprimir_pecas (memoria);
-				reminder.wait ();
-			}
-			
-			catch (InterruptedException e) {
-				e.printStackTrace ();
-			}
-		}
-		System.out.println("teste");
+		jogo.imprimir_pecas (memoria);
+		
 		while (jogo.checar_tabuleiro (memoria)) {
 			jogo.turno (memoria, jogador[0]);
 			jogo.turno (memoria, jogador[1]);
