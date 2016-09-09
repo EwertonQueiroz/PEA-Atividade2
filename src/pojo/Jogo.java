@@ -123,7 +123,7 @@ public class Jogo {
 	 * 		para a etapa de leitura e informa que as cartas informadas já foram desviradas, se forem, verifica-se se os
 	 * 		valores são iguais, caso não sejam, é informado que as cartas são diferentes e é passada a vez, se forem,
 	 * 		a pontuação é incrementada em uma unidade, as peças referentes a posição informada pelo jogador são atualizadas
-	 * 		para -1 e é informado que as catas são iguais e que é a vez do adversário.
+	 * 		para -1 e é informado que as cartas são iguais e que é a vez do adversário.
 	 */
 	private int jogada (int pecas[][], int pontuacao) {
 		int linha_primeira = 0, linha_segunda = 0;
