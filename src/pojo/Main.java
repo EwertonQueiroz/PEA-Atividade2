@@ -10,16 +10,16 @@ public class Main {
 		jogador[0] = new Jogador ();
 		jogador[1] = new Jogador ();
 		
-//		jogo.ler_jogador (jogador[0]);
-//		jogo.ler_jogador (jogador[1]);
+		jogo.ler_jogador (jogador[0]);
+		jogo.ler_jogador (jogador[1]);
 		
 		int[][] memoria = jogo.iniciar_jogo ();
 		
-//		jogo.imprimir_pecas (memoria);
+		jogo.imprimir_pecas (memoria);
 		
 		while (jogo.checar_tabuleiro (memoria)) {
 			jogo.turno (memoria, jogador[0]);
-//			jogo.turno (memoria, jogador[1]);
+			jogo.turno (memoria, jogador[1]);
 		}
 		
 		jogo.determinar_vencedor (jogador[0], jogador[1]);

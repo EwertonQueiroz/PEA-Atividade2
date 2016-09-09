@@ -107,6 +107,30 @@ public class Jogo {
 	//*/
 	
 	/*
+	 *  Esta função faz a leitura de um número inteiro.
+	 *  O nextInt() não foi utilizado diretamente nos locais que precisavam de leitura pois estava dando NoSuchElementException.
+	 *  A anotação Suppress Warnings é para impedir que a função lance avisos devido ao não fechamento do fluxo de entrada.
+	 */
+	@SuppressWarnings("resource")
+	private int ler_inteiro () {
+		Scanner read = new Scanner(System.in);
+		int numero = 0;
+		
+		while (read.hasNext()){
+		    if (read.hasNextInt()){
+		        numero = read.nextInt();
+		        break;
+		    }
+		    
+		    else {
+		        read.next();
+		    }
+		}
+		
+		return numero;
+	}
+	
+	/*
 	 * Esta função recebe uma matriz correspondente as peças do jogo e a pontuação atual do jogador.
 	 * 
 	 * Funcionamento:
@@ -131,62 +155,82 @@ public class Jogo {
 		
 		boolean turno = true;
 		boolean valor_valido = false;
-		
-		Scanner read = new Scanner(System.in);
+		boolean validar_opcao = true;
 		
 		if (checar_tabuleiro(pecas)) {
 			while (turno == true) {
 				while (valor_valido == false) {
 					System.out.println("Informe a linha da primeira peça:");
-					linha_primeira = read.nextInt();
+					linha_primeira = ler_inteiro();
 					
 					System.out.println("Informe a coluna da primeira peça:");
-					coluna_primeira = read.nextInt();
+					coluna_primeira = ler_inteiro();
 					
 					valor_valido = validar_jogada(linha_primeira, coluna_primeira);
+					
+					if (valor_valido == true) {
+						linha_primeira -= 1;
+						coluna_primeira -= 1;
+					}
 				}
 				
 				valor_valido = false;
 				
 				while (valor_valido == false) {
 					System.out.println("Informe a linha da segunda peça:");
-					linha_segunda = read.nextInt();
+					linha_segunda = ler_inteiro();
 					
 					System.out.println("Informe a coluna da segunda peça:");
-					coluna_segunda = read.nextInt();
+					coluna_segunda = ler_inteiro();
 					
 					valor_valido = validar_jogada(linha_segunda, coluna_segunda);
+					
+					if (valor_valido == true) {
+						linha_segunda -= 1;
+						coluna_segunda -= 1;
+					}
 				}
 				
-				linha_primeira -= 1;
-				coluna_primeira -= 1;
+				valor_valido = false;
 				
-				linha_segunda -= 1;
-				coluna_segunda -= 1;
-		
-				if (pecas[linha_primeira][coluna_primeira] != -1 && pecas[linha_segunda][coluna_segunda] != -1) {
-					if (pecas[linha_primeira][coluna_primeira] == pecas[linha_segunda][coluna_segunda]) {
-						pontuacao += 1;
-						pecas[linha_primeira][coluna_primeira] = -1;
-						pecas[linha_segunda][coluna_segunda] = -1;
-						turno = false;
-						System.out.println("As peças são iguais, você pontuou! Vez do adversário.\n");
+				if (linha_primeira == linha_segunda) {
+					if (linha_segunda == coluna_primeira) {
+						if (coluna_primeira == coluna_segunda) {
+							validar_opcao = false;
+						}
+					}
+				}
+				
+				if (validar_opcao) {
+					if (pecas[linha_primeira][coluna_primeira] != -1 && pecas[linha_segunda][coluna_segunda] != -1) {
+						if (pecas[linha_primeira][coluna_primeira] == pecas[linha_segunda][coluna_segunda]) {
+							pontuacao += 1;
+							pecas[linha_primeira][coluna_primeira] = -1;
+							pecas[linha_segunda][coluna_segunda] = -1;
+							turno = false;
+							System.out.println("As peças são iguais, você pontuou! Vez do adversário.\n");
+						}
+						
+						else {
+							System.out.println("As peças são diferentes! Vez do adversário.\n");
+							turno = false;
+						}
 					}
 					
 					else {
-						System.out.println("As peças são diferentes! Vez do adversário.\n");
-						turno = false;
+						if (pecas[linha_primeira][coluna_primeira] == -1) {
+							System.out.println("A peça [" + (linha_primeira + 1) + "][" + (coluna_primeira + 1) + "] já foi desvirada, tente outra.\n");
+						}
+						
+						else {
+							System.out.println("A peça [" + (linha_segunda + 1) + "][" + (coluna_segunda + 1) + "] já foi desvirada, tente outra.\n");
+						}
 					}
 				}
 				
 				else {
-					if (pecas[linha_primeira][coluna_primeira] == -1) {
-						System.out.println("A peça [" + linha_primeira + "][" + coluna_primeira + "] já foi desvirada, tente outra.\n");
-					}
-					
-					else {
-						System.out.println("A peça [" + linha_segunda + "][" + coluna_segunda + "] já foi desvirada, tente outra.\n");
-					}
+					System.out.println("Não é permitido informar a mesma peça duas vezes.");
+					validar_opcao = true;
 				}
 			}
 		}
@@ -194,8 +238,6 @@ public class Jogo {
 		else {
 			System.out.println("Cartas inválidas!");
 		}
-				
-		read.close();
 		
 		return pontuacao;
 	}
