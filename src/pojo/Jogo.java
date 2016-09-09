@@ -136,28 +136,26 @@ public class Jogo {
 		
 		if (checar_tabuleiro(pecas)) {
 			while (turno == true) {
-				while (read.hasNextInt()) {
-					while (valor_valido == false) {
-						System.out.println("Informe a linha da primeira peça:");
-						linha_primeira = read.nextInt();
-						
-						System.out.println("Informe a coluna da primeira peça:");
-						coluna_primeira = read.nextInt();
-						
-						valor_valido = validar_jogada(linha_primeira, coluna_primeira);
-					}
+				while (valor_valido == false) {
+					System.out.println("Informe a linha da primeira peça:");
+					linha_primeira = read.nextInt();
 					
-					valor_valido = false;
+					System.out.println("Informe a coluna da primeira peça:");
+					coluna_primeira = read.nextInt();
 					
-					while (valor_valido == false) {
-						System.out.println("Informe a linha da segunda peça:");
-						linha_segunda = read.nextInt();
-						
-						System.out.println("Informe a coluna da segunda peça:");
-						coluna_segunda = read.nextInt();
-						
-						valor_valido = validar_jogada(linha_segunda, coluna_segunda);
-					}
+					valor_valido = validar_jogada(linha_primeira, coluna_primeira);
+				}
+				
+				valor_valido = false;
+				
+				while (valor_valido == false) {
+					System.out.println("Informe a linha da segunda peça:");
+					linha_segunda = read.nextInt();
+					
+					System.out.println("Informe a coluna da segunda peça:");
+					coluna_segunda = read.nextInt();
+					
+					valor_valido = validar_jogada(linha_segunda, coluna_segunda);
 				}
 				
 				linha_primeira -= 1;
