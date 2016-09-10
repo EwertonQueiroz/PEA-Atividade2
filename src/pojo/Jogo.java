@@ -229,7 +229,7 @@ public class Jogo {
 				}
 				
 				else {
-					System.out.println("Não é permitido informar a mesma peça duas vezes.");
+					System.out.println("Não é permitido informar a mesma peça duas vezes.\n");
 					validar_opcao = true;
 				}
 			}
