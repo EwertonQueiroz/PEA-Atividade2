@@ -93,8 +93,8 @@ public class Jogo {
 	}
 	
 	/* 
-	 * Esta é uma função de testes para visualizar a matriz gerada.                    /
-	 */
+	 * Esta é uma função de testes para visualizar a matriz gerada.
+	 /
 	public void imprimir_pecas (int pecas[][]) {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
