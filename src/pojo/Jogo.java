@@ -135,13 +135,15 @@ public class Jogo {
 	 * 
 	 * Funcionamento:
 	 * 		Primeiro verifica-se se as cartas são válida, ou seja, se todas as peças da partida estão diferente de -1.
-	 * 		Caso as cartas sejam válidas é solicitada as posições da primeira carta e é realizada uma checagem para
+	 * 		Caso as cartas sejam válidas é solicitada a posição da primeira carta e é realizada uma checagem para
 	 * 		saber se àquela posição é válida ou não, se não for, é exibida uma mensagem informando que foi inserida
 	 * 		uma posição inválida e solicita-se uma nova posição, se for válida, é solicitada a posição da segunda
 	 * 		carta e a mesma verificação anterior é realizada.
-	 * 
 	 * 		Os valores informados pelo jogador são decrementados em uma unidade para que possam ser passados para o vetor
 	 * 		para que seja realizada a comparação entre a primeira posição e a segunda.
+	 * 		
+	 * 		Após o decremento em uma unidade, há uma comparação entre os valores informados para a carta, esta verificação
+	 * 		serve para o jogador não indicar a mesma carta duas vezes e, consequentemente, pontuar.
 	 * 		
 	 * 		Após isso, verifica-se se àquelas posições informadas são diferentes de -1, se não forem, a execução retorna
 	 * 		para a etapa de leitura e informa que as cartas informadas já foram desviradas, se forem, verifica-se se os
@@ -194,11 +196,9 @@ public class Jogo {
 				valor_valido = false;
 				
 				if (linha_primeira == linha_segunda) {
-					if (linha_segunda == coluna_primeira) {
 						if (coluna_primeira == coluna_segunda) {
 							validar_opcao = false;
 						}
-					}
 				}
 				
 				if (validar_opcao) {
